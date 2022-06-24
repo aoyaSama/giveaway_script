@@ -27,29 +27,24 @@ def random_entry(proxy, user):
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36'
         }
 
-        url = 'https://nba75comp.com/au'
+        url = 'https://s-craft.studio/'
 
         r = s.get(url=url, headers=headers)
         soup = BeautifulSoup(r.text, 'html.parser')
-
-        # get random team
-        teams = soup.find_all('option')
-        team = random.choice(teams)['value']
+        token = soup.find('input', {"name": "_token"})['value']
+        print(soup.find('input', {"name": "_token"})['value'])
 
         data = {
-            'email_address': user.email,
-            'favorite_nba_team': team,
-            'first_name': user.fname,
-            'last_name': user.lname,
-            'phone_number': "",
-            'agree_rules': "yes"
+            '_token': token,
+            'email': user.email,
+            'firstname': user.fname,
+            'lastname': user.lname,
         }
 
-        post_url = 'https://nba75comp.com/app/entry_action/134'
+        post_url = 'https://s-craft.studio/user/launchersubscribe'
         r = s.post(url=post_url, data=data, headers=headers)
-        print(r.text)
 
-        if r.json()['status'] != 'OK':
+        if r.json()['status'] != '0':
             return Exception(f'{r.status_code} | {r.text}')
 
         print(f'\033[92m Entry submitted'+ ' '+ user.email)

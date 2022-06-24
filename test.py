@@ -2,7 +2,7 @@ import requests
 import threading
 import time as t
 import random
-import proxy as p
+import src.proxy as p
 from random import randint
 from faker import Faker
 from bs4 import BeautifulSoup
